@@ -2,7 +2,7 @@
 * @Author: Jiyang Du
 * @Date:   2018-05-02 13:56:47
 * @Last Modified by:   Jiyang Du
-* @Last Modified time: 2018-05-03 21:15:33
+* @Last Modified time: 2018-05-07 14:42:12
 */
 		body,div,h1,h2,h3,ul,li,span,img,i,p{
 			margin: 0;padding: 0;
@@ -91,11 +91,66 @@
 	    margin: 0 8px 0 4px;
 		}
 
+		.Mchoice-inside-i{
+			
+		}
+
 		.Schoice-inside-p{
 	    display: inline-block;
 		}
 
 		.Mchoice-inside-p{
 	    display: inline-block;
+		}
+
+		.item-i-single{
+			width: 10px;
+	    height: 10px;
+	    background-color: #6f2c2c;
+	    display: inline-block;
+	    border: 1px solid #f00;
+	    border-radius: 50%;
+		}
+
+		.item-i-multiply{
+			width: 10px;
+	    height: 10px;
+	    background-color: #6f2c2c;
+	    display: inline-block;
+	    border: 1px solid #f00;
+	    border-radius: 2px;
+		}
+
+		.item-radio{
+
+		}
+
+		.item-text{
+
+		}
+
+		.item-add{
+			width: 15px;
+	    height: 15px;
+	    border: 1px solid #f00;
+	    border-radius: 50%;
+	    display: inline-block;
+	    vertical-align: text-bottom;
+	    text-align: center;
+	    line-height: 15px;
+	    margin-left: 5px;
+		}
+
+		.item-del{
+	    width: 15px;
+	    height: 15px;
+	    border: 1px solid #f00;
+	    border-radius: 50%;
+	    display: inline-block;
+	    vertical-align: text-bottom;
+	    text-align: center;
+	    line-height: 15px;
+	    margin-left: 5px;
+
 		}
 		
