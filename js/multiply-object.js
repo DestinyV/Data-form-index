@@ -2,7 +2,7 @@
 * @Author: Jiyang Du
 * @Date:   2018-05-03 10:08:58
 * @Last Modified by:   Jiyang Du
-* @Last Modified time: 2018-05-08 21:02:07
+* @Last Modified time: 2018-05-08 22:22:47
 */
 /*文本项目对象*/
 	function Text(option){
@@ -143,7 +143,7 @@
 			this.inDOMrclassName = option.inDOMrclassName || '';
 			this.item = option.item || [];
 			this.mainDOM = option.mainDOM || 'main';
-			this.edit_containerDOMid = option.EditContainerDOMid || '';
+			this.edit_containerDOMid = option.EditContainerDOMid || '';//再次载入时失效？！‘’
 			this.editTitleid = option.editTitleid || '';
 			this.editContentid = option.editContentid || '';
 			this.item_input_DOM = option.item_input_DOM || '';
@@ -248,14 +248,14 @@
 			//通过传入的id获取编辑区DOM
 			var title = document.getElementById(_this.titleDOMid);//h3
 			var content = document.getElementById(_this.contentDOMid);//div item容器
-			var mainediter = document.getElementById(_this.edit_containerDOMid);//最大div
+			//var mainediter = document.getElementById(_this.edit_containerDOMid);//最大div
 			var EditTitle = document.getElementById(_this.editTitleid);//input
 			var EditContent = document.getElementById(_this.editContentid);//ul
 			var nodes = EditContent.children;//项目li 编辑区
 			var items = content.children;//项目div 文本区
 			
 			/*文本传输区域start*/
-			mainediter.onkeypress = function(e){//debugger;//title 文本数据传输
+			EditTitle.parentNode.onkeypress = function(e){//debugger;//title 文本数据传输
 				var e = event || window.event;
 				if(e && e.keyCode === 13){
 					if(EditTitle.value !== ''){
@@ -343,7 +343,7 @@
 						readonly: false,
 						contentText: '项目'
 					}
-					_this.item.splice(i,0,new_item);//从manager添加DOM
+					_this.item.splice(i+1,0,new_item);//从manager添加DOM
 
 					/*最后再调用datachange使新创建的DOM获得编辑功能*/
 					_this.DataChange(_this);
@@ -358,9 +358,9 @@
 			}
 			/*add/del 传输区域end*/
 			/*loaclStorage 缓存start*/
-			/*if(_this.Manager){
+			if(_this.Manager){
 				localStorage.setItem('Data_item',JSON.stringify(_this.Manager));
-			}*/
+			}
 			/*loaclStorage 缓存end*/
 		},
 		removeItem: function(array,item){
