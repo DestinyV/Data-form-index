@@ -2,7 +2,7 @@
 * @Author: Jiyang Du
 * @Date:   2018-05-03 10:08:58
 * @Last Modified by:   Jiyang Du
-* @Last Modified time: 2018-05-08 16:21:00
+* @Last Modified time: 2018-05-08 21:02:07
 */
 /*文本项目对象*/
 	function Text(option){
@@ -344,7 +344,7 @@
 						contentText: '项目'
 					}
 					_this.item.splice(i,0,new_item);//从manager添加DOM
-					
+
 					/*最后再调用datachange使新创建的DOM获得编辑功能*/
 					_this.DataChange(_this);
 				},true);
@@ -357,6 +357,11 @@
 				},true);
 			}
 			/*add/del 传输区域end*/
+			/*loaclStorage 缓存start*/
+			/*if(_this.Manager){
+				localStorage.setItem('Data_item',JSON.stringify(_this.Manager));
+			}*/
+			/*loaclStorage 缓存end*/
 		},
 		removeItem: function(array,item){
 			var main_DOM = document.querySelector('#' + this.mainDOM);

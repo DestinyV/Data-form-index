@@ -2,7 +2,7 @@
 * @Author: Jiyang Du
 * @Date:   2018-05-02 11:38:53
 * @Last Modified by:   Jiyang Du
-* @Last Modified time: 2018-05-08 16:03:00
+* @Last Modified time: 2018-05-08 21:03:07
 */
 window.onload = function(){
 	var func = document.querySelector('#func'),
@@ -12,6 +12,26 @@ window.onload = function(){
 		objManager = [],
 		lis = func_list.children;
 
+	/*localStorage reload  start*/
+			var reload_pre = localStorage.getItem('Data_item');
+			if(reload_pre){
+				var reload_items = JSON.parse(reload_pre);
+				for(let i = 0;i < reload_items.length;i+=1){
+					reload_items[i].Manager = objManager;
+					if(reload_items[i].item){
+						var choice = new Choice(reload_items[i]);
+						choice.build();
+						Manager('containerDOMid');
+					}else{
+						var text = new Text(reload_items[i]);
+						text.build();
+						Manager('containerDOMid');
+					}
+				}
+			}
+	/*localStorage reload  end*/
+	
+		//给单行文字、多行文字、单项选择、多项选择添加点击事件
 		lis[0].addEventListener('click',function(e){
 			//每次点击new一个相应实例对象！
 			var Stext = new Text({
@@ -33,6 +53,7 @@ window.onload = function(){
 			});
 			Stext.build();
 			Manager('containerDOMid');
+			itemSave();
 		},true);
 		lis[1].addEventListener('click',function(e){
 			var Mtext = new Text({
@@ -54,6 +75,7 @@ window.onload = function(){
 			});
 			Mtext.build();
 			Manager('containerDOMid');
+			itemSave();
 		},true);
 		lis[2].addEventListener('click',function(e){
 			var Schoice = new Choice({
@@ -101,6 +123,7 @@ window.onload = function(){
 			});
 			Schoice.build();
 			Manager('containerDOMid');
+			itemSave();
 		},true);
 		lis[3].addEventListener('click',function(e){
 			var Mchoice = new Choice({
@@ -148,6 +171,7 @@ window.onload = function(){
 			});
 			Mchoice.build();
 			Manager('containerDOMid');
+			itemSave();
 		},true);
 
 		//调用保存的实例对象！
@@ -158,96 +182,23 @@ window.onload = function(){
 						if(objManager[i]){
 							objManager[i].showEditor(edit);
 							objManager[i].DataChange(objManager[i]);
+							itemSave();
 						}
 					});
 					document.getElementById(objManager[i][arg]).addEventListener('dblclick',function(e){
 						if(objManager[i]){
 							objManager[i].removeItem(objManager,this);
+							itemSave();
 						}
 					});
 				}
 			}
 		}
-		
-		
-	
-	 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		/*loaclStorage 缓存start*/
+		function itemSave(){
+			if(objManager){
+				localStorage.setItem('Data_item',JSON.stringify(objManager));
+			}
+		}
+		/*loaclStorage 缓存end*/
 }
