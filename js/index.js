@@ -2,33 +2,16 @@
 * @Author: Jiyang Du
 * @Date:   2018-05-02 11:38:53
 * @Last Modified by:   Jiyang Du
-* @Last Modified time: 2018-05-07 16:07:38
+* @Last Modified time: 2018-05-08 16:03:00
 */
 window.onload = function(){
 	var func = document.querySelector('#func'),
 		func_list = document.querySelector('#func_list'),
 		main = document.querySelector('#main'),
-	itemform = [{
-				display: 'block',
-				checked: false,
-				readonly: false,
-				innerText: '项目'
-			}, {
-				display: 'block',
-				checked: false,
-				readonly: false,
-				innerText: '项目'
-			}, {
-				display: 'block',
-				checked: false,
-				readonly: false,
-				innerText: '项目'
-
-			}],
 		edit = document.querySelector('#edit'),
-		objManager = [];
+		objManager = [],
+		lis = func_list.children;
 
-		var lis = func_list.children;
 		lis[0].addEventListener('click',function(e){
 			//每次点击new一个相应实例对象！
 			var Stext = new Text({
@@ -49,7 +32,7 @@ window.onload = function(){
 				Manager: objManager
 			});
 			Stext.build();
-			GetManager('containerDOMid');
+			Manager('containerDOMid');
 		},true);
 		lis[1].addEventListener('click',function(e){
 			var Mtext = new Text({
@@ -70,7 +53,7 @@ window.onload = function(){
 				Manager: objManager
 			});
 			Mtext.build();
-			GetManager('containerDOMid');
+			Manager('containerDOMid');
 		},true);
 		lis[2].addEventListener('click',function(e){
 			var Schoice = new Choice({
@@ -87,7 +70,23 @@ window.onload = function(){
 				inDOMlclassName : 'Schoice-inside-i',
 				insideDOMr : 'p',
 				inDOMrclassName : 'Schoice-inside-p',
-				item: itemform,
+				item: [{
+						display: true,
+						checked: false,
+						readonly: false,
+						contentText: '项目'
+					}, {
+						display: true,
+						checked: false,
+						readonly: false,
+						contentText: '项目'
+					}, {
+						display: true,
+						checked: false,
+						readonly: false,
+						contentText: '项目'
+
+					}],//text
 				mainDOM : 'main',
 				EditContainerDOMid:'edit-div-' + new Date().getTime(),
 				editTitleid : 'edit-input-' + new Date().getTime(),
@@ -101,7 +100,7 @@ window.onload = function(){
 				Manager: objManager
 			});
 			Schoice.build();
-			GetManager('containerDOMid');
+			Manager('containerDOMid');
 		},true);
 		lis[3].addEventListener('click',function(e){
 			var Mchoice = new Choice({
@@ -118,7 +117,23 @@ window.onload = function(){
 				inDOMlclassName : 'Mchoice-inside-i',
 				insideDOMr : 'p',
 				inDOMrclassName : 'Mchoice-inside-p',
-				item: itemform,
+				item: [{
+						display: true,
+						checked: false,
+						readonly: false,
+						contentText: '项目'
+					}, {
+						display: true,
+						checked: false,
+						readonly: false,
+						contentText: '项目'
+					}, {
+						display: true,
+						checked: false,
+						readonly: false,
+						contentText: '项目'
+
+					}],//text
 				mainDOM : 'main',
 				EditContainerDOMid:'edit-div-' + new Date().getTime(),
 				editTitleid : 'edit-input-' + new Date().getTime(),
@@ -132,11 +147,11 @@ window.onload = function(){
 				Manager: objManager
 			});
 			Mchoice.build();
-			GetManager('containerDOMid');
+			Manager('containerDOMid');
 		},true);
 
 		//调用保存的实例对象！
-		function GetManager(arg){
+		function Manager(arg){
 			for(let i = 0;i < objManager.length;i+=1){//debugger;
 				if(objManager[i]){console.log(objManager);
 					document.getElementById(objManager[i][arg]).addEventListener('click',function(){

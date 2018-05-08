@@ -2,7 +2,7 @@
 * @Author: Jiyang Du
 * @Date:   2018-05-03 10:08:58
 * @Last Modified by:   Jiyang Du
-* @Last Modified time: 2018-05-07 16:56:22
+* @Last Modified time: 2018-05-08 16:21:00
 */
 /*文本项目对象*/
 	function Text(option){
@@ -167,11 +167,21 @@
 				content_DOM.id = this.contentDOMid;
 			for(let i = 0;i < this.item.length; i+=1){
 				var outside_DOM = document.createElement(this.outsideDOM);
+					if(this.item[i].display){
+						outside_DOM.style.display = 'block';
+					}else{
+						outside_DOM.style.display = 'none';
+					}
 				var inside_DOMl = document.createElement(this.insideDOMl);
 					inside_DOMl.className = this.inDOMlclassName;
+					if(this.item[i].checked){
+						inside_DOMl.style.backgroundColor = 'red';
+					}else{
+						inside_DOMl.style.backgroundColor = 'white';
+					}
 				var inside_DOMr = document.createElement(this.insideDOMr);
 					inside_DOMr.className = this.inDOMrclassName;
-					inside_DOMr.innerText = this.item[i].innerText;
+					inside_DOMr.innerText = this.item[i].contentText;//text
 				outside_DOM.appendChild(inside_DOMl);
 				outside_DOM.appendChild(inside_DOMr);
 				content_DOM.appendChild(outside_DOM);
@@ -204,6 +214,9 @@
 					var itemDOM_radio = document.createElement('input');
 						itemDOM_radio.type = this.item_input_DOM;
 						itemDOM_radio.className = this.item_input_ClassName;
+						if(this.item[i].checked){
+							itemDOM_radio.setAttribute('checked',true);
+						}
 					var itemDOM_text = document.createElement('input');
 						itemDOM_text.value = nodes[i].innerText;
 						itemDOM_text.type = 'text';
@@ -232,50 +245,129 @@
 			if(_this){
 				_this.showEditor(edit);//重新再动态创建editDOM 否则还是之前新建的
 			}
-			var self = _this;
 			//通过传入的id获取编辑区DOM
 			var title = document.getElementById(_this.titleDOMid);//h3
 			var content = document.getElementById(_this.contentDOMid);//div item容器
 			var mainediter = document.getElementById(_this.edit_containerDOMid);//最大div
 			var EditTitle = document.getElementById(_this.editTitleid);//input
 			var EditContent = document.getElementById(_this.editContentid);//ul
-			var nodes = EditContent.children;//项目li
-			var items = content.children;//项目div
+			var nodes = EditContent.children;//项目li 编辑区
+			var items = content.children;//项目div 文本区
+			
+			/*文本传输区域start*/
 			mainediter.onkeypress = function(e){//debugger;//title 文本数据传输
 				var e = event || window.event;
 				if(e && e.keyCode === 13){
 					if(EditTitle.value !== ''){
-						self.titleText = EditTitle.value;
+						_this.titleText = EditTitle.value;
 						title.innerText = EditTitle.value;
 					}
 				}
 			}
 			EditTitle.onchange = function(e){//title 文本数据传输
 				if(EditTitle.value !== ''){
-					self.titleText = EditTitle.value;
+					_this.titleText = EditTitle.value;
 					title.innerText = EditTitle.value;
 				}
 			}
-			for(let i = 0; i < nodes.length;i+=1){
+			for(let i = 0; i < nodes.length;i+=1){//bug item泄露改变了this全局变量!!!已解决
 				if(nodes[i].children[2].value){//input value
 					nodes[i].children[2].onchange = function(e){//每个小项目文本修改后传输
-						if(this.value){
-							self.item[i].innerText = this.value;
+						_this.item[i].contentText = this.value;
 						items[i].children[1].innerText = this.value;
-						}
 					}
 					nodes[i].children[2].onkeypress = function(e){//每个小项目单击键盘enter后
 						var e = event || window.event;
 						if(e && e.keyCode === 13 && this.value){
-							self.item[i].innerText = this.value;
+							_this.item[i].contentText = this.value;
 							items[i].children[1].innerText = this.value;
 						}
 					}
-					
 				}
 			}
+			/*文本传输区域end*/
+
+			/*显示隐藏传输区域start*/
+			for(let i = 0; i < nodes.length;i+=1){
+				nodes[i].children[0].addEventListener('click',function(e){
+					if(_this.item[i].display){
+						_this.item[i].display = false;
+						items[i].style.display = 'none';
+					}else{
+						_this.item[i].display = true;
+						items[i].style.display = 'block';
+					}
+				},true);
+			}
+			/*显示隐藏传输区域end*/
+
+			/*input选框css样式start*/
+			for(let i = 0; i < nodes.length;i+=1){
+				nodes[i].children[1].addEventListener('click',function(e){
+					if(_this.item[i].checked){
+						_this.item[i].checked = false;
+						_this.item[i].readonly = false;
+						items[i].children[0].style.backgroundColor = 'white';
+						nodes[i].children[1].removeAttribute('checked');
+						nodes[i].children[2].removeAttribute('readonly');
+					}else{
+						_this.item[i].checked = true;
+						_this.item[i].readonly = true;
+						items[i].children[0].style.backgroundColor = 'red';
+						nodes[i].children[1].setAttribute('checked',true);
+						nodes[i].children[2].setAttribute('readonly',true);
+					}
+				},true);
+			}
+			/*input选框css样式end*/
+
+			/*add/del 传输区域start*/
+			for(let i = 0; i < nodes.length;i+=1){
+				nodes[i].children[3].addEventListener('click',function(e){
+					var new_li = nodes[i].cloneNode(true);
+						new_li.children[1].removeAttribute('checked');
+						new_li.children[2].value = '项目';
+					var new_div = items[i].cloneNode(true);
+						new_div.children[0].style.backgroundColor = 'white';
+						new_div.children[1].innerText = '项目';
+						if(nodes[i+1]){
+							EditContent.insertBefore(new_li,nodes[i+1]);//从编辑区添加DOM
+							content.insertBefore(new_div,items[i+1]);//从文本区添加DOM
+						}else{
+							EditContent.appendChild(new_li);//从编辑区添加DOM
+							content.appendChild(new_div);//从文本区添加DOM
+						}
+					var new_item = {
+						display: true,
+						checked: false,
+						readonly: false,
+						contentText: '项目'
+					}
+					_this.item.splice(i,0,new_item);//从manager添加DOM
+					
+					/*最后再调用datachange使新创建的DOM获得编辑功能*/
+					_this.DataChange(_this);
+				},true);
+			}
+			for(let i = 0; i < nodes.length;i+=1){
+				nodes[i].children[4].addEventListener('click',function(e){
+					EditContent.removeChild(nodes[i]);//从编辑区删除DOM
+					content.removeChild(items[i]);//从文本区移除DOM
+					_this.item.splice(i,1);//从manager移除DOM
+				},true);
+			}
+			/*add/del 传输区域end*/
 		},
-		removeItem: function(){
-			console.log('remove-item');
+		removeItem: function(array,item){
+			var main_DOM = document.querySelector('#' + this.mainDOM);
+			var nodes = main_DOM.children;
+			for(let i = 0;i < nodes.length;i+=1){
+				if(nodes[i] === item){
+					//从Manager中删除
+					array.splice(i, 1);
+					//从页面删除
+					main_DOM.removeChild(nodes[i]);
+				}
+			}
 		}
 	}
