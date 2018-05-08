@@ -2,7 +2,7 @@
 * @Author: Jiyang Du
 * @Date:   2018-05-02 11:38:53
 * @Last Modified by:   Jiyang Du
-* @Last Modified time: 2018-05-08 21:03:07
+* @Last Modified time: 2018-05-08 21:09:18
 */
 window.onload = function(){
 	var func = document.querySelector('#func'),
@@ -16,7 +16,7 @@ window.onload = function(){
 			var reload_pre = localStorage.getItem('Data_item');
 			if(reload_pre){
 				var reload_items = JSON.parse(reload_pre);
-				for(let i = 0;i < reload_items.length;i+=1){
+				for(let i = reload_items.length-1;i >= 0;i-=1){
 					reload_items[i].Manager = objManager;
 					if(reload_items[i].item){
 						var choice = new Choice(reload_items[i]);
